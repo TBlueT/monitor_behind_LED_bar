@@ -21,15 +21,23 @@ void setup() {
   strip.show();
   strip2.show();
 }
-int color[5] = {0,0,0,0,0};
+int color[5] = {0,};
+int all_color[6][8][5] = {0,};
 int zone[3] = {0,8,16};
 
 unsigned long millisTime = millis();
 unsigned long old_millisTime = millis();
+
+String buf;
+bool RGB_trigger = false;
 void loop() {
   unsigned long millisTime = millis();
   if(Serial.available()>0){
-      int ord = str_to_int(Serial.readStringUntil('\n'));
+      buf = Serial.readStringUntil('\n');
+      RGB_trigger = true;
+    }
+  if(RGB_trigger){
+    int ord = str_to_int(buf);
       if(ord){
         if(color[0]<=2){
           strip.setPixelColor((color[0]*8)+color[1],strip.Color(color[2],color[3],color[4]));
@@ -41,7 +49,8 @@ void loop() {
         }
         old_millisTime = millisTime;
       }
-    }
+    RGB_trigger = false;
+  }
 
   if(millisTime-old_millisTime > 10000){
     whiteOverRainbow();
@@ -57,7 +66,7 @@ void whiteOverRainbow() {
     }
     strip.show();
     strip2.show();
-    firstPixelHue += 10;
+    firstPixelHue += 50;
   
 }
 

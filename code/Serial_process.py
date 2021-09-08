@@ -15,6 +15,8 @@ class SerialProcess(threading.Thread):
                               [[0, 0, 0] for i in range(0, 8)],
                               [[0, 0, 0] for i in range(0, 8)], [[0, 0, 0] for i in range(0, 8)],
                               [[0, 0, 0] for i in range(0, 8)]]
+
+        self.print_data = False
     def run(self):
         while True:
             try:
@@ -24,12 +26,14 @@ class SerialProcess(threading.Thread):
                             if self.address_color[i][o][p] != self.old_address_color[i][o][p]:
                                 data = (
                                     f"({i},{o},{int(self.address_color[i][o][0])},{int(self.address_color[i][o][1])},{int(self.address_color[i][o][2])})\n").encode()
-                                print(data)
+                                if self.print_data:
+                                    print(data)
                                 self.serial_port.write(data)
-                                print(self.serial_port.readline().decode())
+                                buf = self.serial_port.readline().decode()
+                                if self.print_data:
+                                    print(buf)
                                 self.old_address_color[i][o] = self.address_color[i][o]
-
-                time.sleep(0.05)
+                time.sleep(0.0001)
             except:
                 self.connect(self.COM_memo)
                 time.sleep(1)
