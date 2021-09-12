@@ -71,6 +71,7 @@ class img_process:
         return roi
 
     def color_average(self, img):
-        color = sum(sum(img, [0, 0, 0]))
+        #color = sum(sum(img, [0, 0, 0]))
         #print((len(img[1]) * len(img)))
-        return color/ (len(img[1]) * len(img))
+        color = [np.mean(img[:,:,0]),np.mean(img[:,:,1]),np.mean(img[:,:,2])]
+        return color
