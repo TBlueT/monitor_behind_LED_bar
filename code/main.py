@@ -2,11 +2,7 @@ import timeit, time
 from Serial_process import *
 from opencv import *
 from Display import *
-#LED bar pin
-#GND
-#DI
-#vcc
-#https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=chandong83&logNo=40183590328
+
 class main:
     def __init__(self):
         self.img_por = img_process()
