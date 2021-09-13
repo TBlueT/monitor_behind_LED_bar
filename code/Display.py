@@ -8,9 +8,12 @@ class DIs(threading.Thread):
         self.daemon = True
 
         self.windowText = "0"
+        self.writeWindow = True
+        self.hWindow = [None]
 
     def windowText_intput(self, input):
         self.windowText = input
+        self.customDraw(self.hWindow)
 
     def run(self):
 
@@ -29,42 +32,39 @@ class DIs(threading.Thread):
 
         wndClassAtom = win32gui.RegisterClass(wndClass)
 
-        exStyle = win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_NOACTIVATE | win32con.WS_EX_TOPMOST | win32con.WS_EX_TRANSPARENT
+        exStyle = win32con.WS_EX_APPWINDOW | win32con.WS_EX_COMPOSITED | win32con.WS_EX_LAYERED | win32con.WS_EX_NOACTIVATE | win32con.WS_EX_TOPMOST | win32con.WS_EX_TRANSPARENT
 
         style = win32con.WS_DISABLED | win32con.WS_POPUP | win32con.WS_VISIBLE
 
-        hWindow = win32gui.CreateWindowEx(
+        self.hWindow = win32gui.CreateWindowEx(
             exStyle,
             wndClassAtom,
             None, # WindowName
             style,
-            int(win32api.GetSystemMetrics(win32con.SM_CXSCREEN)/20)*19, # x
+            int(win32api.GetSystemMetrics(win32con.SM_CXSCREEN)/30)*29, # x
             0, # y
-            int(win32api.GetSystemMetrics(win32con.SM_CXSCREEN)/20), # width
-            int(win32api.GetSystemMetrics(win32con.SM_CYSCREEN)/15), # height
+            int(win32api.GetSystemMetrics(win32con.SM_CXSCREEN)/30), # width
+            int(win32api.GetSystemMetrics(win32con.SM_CYSCREEN)/20), # height
             None, # hWndParent
             None, # hMenu
             hInstance,
             None # lpParam
         )
 
-        win32gui.SetLayeredWindowAttributes(hWindow, win32api.RGB(255,255,255), 200, win32con.LWA_COLORKEY | win32con.LWA_ALPHA)
+        win32gui.SetLayeredWindowAttributes(self.hWindow, win32api.RGB(255,255,255), 200, win32con.LWA_COLORKEY | win32con.LWA_ALPHA)
 
-        win32gui.SetWindowPos(hWindow, win32con.HWND_TOPMOST, 0, 0, 0, 0,
-            win32con.SWP_NOACTIVATE | win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_SHOWWINDOW)
-        win32gui.ShowWindow(hWindow, win32con.SW_SHOWNORMAL)
-        win32gui.UpdateWindow(hWindow)
-        thr = threading.Thread(target=self.customDraw, args=(hWindow, ))
-        thr.setDaemon(False)
-        thr.start()
+        win32gui.SetWindowPos(self.hWindow, win32con.HWND_TOP, 0, 0, 0, 0,
+            win32con.SWP_NOACTIVATE | win32con.SWP_NOMOVE | win32con.SWP_NOOWNERZORDER | win32con.SWP_NOSIZE | win32con.SWP_NOZORDER | win32con.SWP_SHOWWINDOW)
+
+        win32gui.UpdateWindow(self.hWindow)
+
         win32gui.PumpMessages()
 
     def customDraw(self, hWindow):
         global windowText
-        while True:
-            time.sleep(0.1)
-            windowText = self.windowText
-            win32gui.RedrawWindow(hWindow, None, None, win32con.RDW_INVALIDATE | win32con.RDW_ERASE)
+
+        windowText = self.windowText
+        win32gui.RedrawWindow(hWindow, None, None, win32con.RDW_INVALIDATE | win32con.RDW_ERASE)
 
 
     def wndProc(self, hWnd, message, wParam, lParam):
@@ -72,7 +72,7 @@ class DIs(threading.Thread):
             hdc, paintStruct = win32gui.BeginPaint(hWnd)
 
             dpiScale = win32ui.GetDeviceCaps(hdc, win32con.LOGPIXELSX) / 60.0
-            fontSize = 80
+            fontSize = 50
 
             lf = win32gui.LOGFONT()
             lf.lfFaceName = "Times New Roman"

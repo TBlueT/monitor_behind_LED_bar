@@ -6,7 +6,7 @@ from Display import *
 #GND
 #DI
 #vcc
-
+#https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=chandong83&logNo=40183590328
 class main:
     def __init__(self):
         self.img_por = img_process()
@@ -36,14 +36,14 @@ class main:
 
                 self.prev_time = timeit.default_timer()
 
-            FPS = int(1. / (self.prev_time - start_t))
-            self.Dis.windowText_intput(F"{FPS}")
+                FPS = int(1. / (self.prev_time - start_t))
+                self.Dis.windowText_intput(F"{FPS}")
 
             #cv2.imshow('original', dat)
 
-            if cv2.waitKey(25) & 0xFF == ord('q'):
-                cv2.destroyAllWindows()
-                break
+            # if cv2.waitKey(25) & 0xFF == ord('q'):
+            #     cv2.destroyAllWindows()
+            #     break
 
             time.sleep(0.0001)
 
