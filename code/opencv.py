@@ -61,7 +61,7 @@ class img_process:
         h = int(monitor_size[0] / 9 * order + (monitor_size[0] / 50))
         y = 0
         w = len(roi1)
-        for i in range(0, 8):
+        for i, i_data in enumerate(self.address_color[address-1]):
             #print(len(roi1[0]), x,y,h,w)
             roi = roi1[y:w,x:h]
             self.address_color[address-1][i] = self.color_average(roi)

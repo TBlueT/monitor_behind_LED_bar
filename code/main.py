@@ -22,7 +22,7 @@ class main:
 
             current_time = start_t-self.prev_time
             if current_time > 1./self.FPS_set:
-                for i in range(1, 7):
+                for i, i_data in enumerate(self.address_color, 1):
                     if i == 4 or i == 1:
                         img = self.img_por.run2_cut(1 if i <=3 else 4)
                     self.img_por.run2(i, img)

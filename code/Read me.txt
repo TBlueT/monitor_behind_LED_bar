@@ -1,0 +1,17 @@
+
+     WS2812B LED position applied behind the current monitor
+l-----------------------------------------------------------------------l
+l	oooooooo	oooooooo	oooooooo          l
+l                                                                                   l
+l                                                                                   l
+l                                                                                   l
+l                                                                                   l
+l      One line above and one line below different connections      l
+l                                                                                   l
+l                                                                                   l
+l                                                                                   l
+l                                                                                   l
+l	oooooooo	oooooooo	oooooooo          l
+l-----------------------------------------------------------------------l
+
+installs list: numpy, pyserial, win32, opencv-python, Pillow
