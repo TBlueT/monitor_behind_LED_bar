@@ -16,7 +16,7 @@ class main:
         self.address_color = [[[0, 0, 0]for i in range(0, 8)]for i in range(0, 7)]
 
         self.prev_time = 0
-        self.FPS_set = 100
+        self.FPS_set = 30
 
     def run(self):
         while True:
