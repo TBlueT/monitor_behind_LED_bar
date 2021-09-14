@@ -3,6 +3,8 @@ from Serial_process import *
 from opencv import *
 from Display import *
 
+#https://conansjh20.tistory.com/61
+
 class main:
     def __init__(self):
         self.img_por = img_process()
@@ -14,7 +16,7 @@ class main:
         self.address_color = [[[0, 0, 0]for i in range(0, 8)]for i in range(0, 7)]
 
         self.prev_time = 0
-        self.FPS_set = 30
+        self.FPS_set = 100
 
     def run(self):
         while True:
