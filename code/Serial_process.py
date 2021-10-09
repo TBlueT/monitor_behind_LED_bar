@@ -1,5 +1,5 @@
 import serial, time, threading
-
+from multiprocessing import Process
 
 class SerialProcess(threading.Thread):
     def __init__(self, IMU_COM):
@@ -8,8 +8,8 @@ class SerialProcess(threading.Thread):
         self.COM_memo = IMU_COM
         self.connect(self.COM_memo)
 
-        self.address_color = [[[0, 0, 0] for i in range(0, 8)] for i in range(0, 7)]
-        self.old_address_color = [[[0, 0, 0]for i in range(0, 8)]for i in range(0, 7)]
+        self.address_color = [None]
+        self.old_address_color = [None]
 
         self.print_data = False
     def run(self):

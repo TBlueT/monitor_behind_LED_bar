@@ -7,16 +7,13 @@ from PIL import Image
 
 class img_process:
     def __init__(self):
-        self.address_color = [[[0, 0, 0]for i in range(0, 8)]for i in range(0, 7)]
+        self.address_color = [None]
 
-        self.address_color_test = [[0, 0, 0] for i in range(0, 8)]
         self.hwnd = win32gui.GetDesktopWindow()
         self.size_x, self.size_y, self.size_h, self.size_w = win32gui.GetWindowRect(self.hwnd)
 
-
-
     def read_Desktop(self, x,y,w,h):
-        hDC = win32gui.GetWindowDC(self.hwnd)
+        hDC = win32gui.GetDC(None)
         myDC = win32ui.CreateDCFromHandle(hDC)
         newDC = myDC.CreateCompatibleDC()
 
@@ -37,7 +34,9 @@ class img_process:
         win32gui.ReleaseDC(self.hwnd, hDC)
 
         bmp = Image.frombytes('RGBA', (bmpinfo['bmWidth'], bmpinfo['bmHeight']), bmpstr)
+
         img = np.array(bmp)
+
         dst = cv2.cvtColor(img, cv2.COLOR_RGBA2BGR)
 
         return dst
@@ -52,13 +51,14 @@ class img_process:
         w = int(monitor_size[1] / 22) if address <= 3 else monitor_size[1]
 
         return self.read_Desktop(x, y, h, w)
+
     def run2(self, address,img):
         order = 1 if address == 1 else 4 if address == 2 else 7 if address == 3 else 1 if address == 4 else 4 if address == 5 else 7 if address == 6 else 0
         monitor_size = [self.size_h, self.size_w]
 
         roi1 = img
-        x = int(monitor_size[0] / 9 * order)
-        h = int(monitor_size[0] / 9 * order + (monitor_size[0] / 50))
+        x = int(monitor_size[0] / (len(self.address_color[address-1])+1) * order)
+        h = int(monitor_size[0] / (len(self.address_color[address-1])+1) * order + (monitor_size[0] / 50))
         y = 0
         w = len(roi1)
         for i, i_data in enumerate(self.address_color[address-1]):
